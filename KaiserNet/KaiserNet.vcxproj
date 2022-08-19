@@ -145,7 +145,6 @@
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GenerateNetwork.cpp" />
     <ClInclude Include="Layer.hpp" />
     <ClInclude Include="Shared.hpp" />
   </ItemGroup>
