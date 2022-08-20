@@ -18,6 +18,10 @@ int Error(string msg, int code, bool critical) {
 	return code;
 }
 
+void Log(double val) {
+	std::cout << to_string(val) << "\n";
+}
+
 void Log(string msg) {
 	if (msg.empty())
 		return;

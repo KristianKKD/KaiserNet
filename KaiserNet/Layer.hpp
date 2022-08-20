@@ -1,12 +1,5 @@
 #include "Shared.hpp"
-
-#define MAXSIZE 128
-
-enum LayerType {
-	Input,
-	Output,
-	Hidden,
-};
+#include <random>
 
 class Node {
 public:
@@ -14,21 +7,25 @@ public:
 	double heldValue;
 	double outgoingWeights[MAXSIZE];
 
-	Node(LayerType myType) {
-		bias = InitializeBias(myType);
-		heldValue = bias;
+	Node() {
+		bias = GetRandomValue();
+		heldValue = GetRandomValue();
 		for (int i = 0; i < MAXSIZE; i++)
-			outgoingWeights[i] = bias;
+			outgoingWeights[i] = GetRandomValue();
 	}
+
+	Node(double target) {
+		heldValue = target;
+		bias = 0;
+		for (int i = 0; i < MAXSIZE; i++)
+			outgoingWeights[i] = GetRandomValue();
+	}
+
 
 	~Node() {}
 
-	double InitializeBias(LayerType myType) { //can't be zero
-		return 0.01;
-	}
-
-	void Pulse(double incomingValue) {
-
+	static double GetRandomValue() { //can't be zero
+		return double(std::rand() % 10) / 1000.0;
 	}
 
 	double GetWeightTowards(int nodeIndex) {
@@ -36,38 +33,39 @@ public:
 	}
 
 	void Activate(double sum) {
-		sum += bias;
+		heldValue = ActivationFunction(sum + bias);
+	}
+
+	static double ActivationFunction(double sum) {
 		if (sum > 1)
 			sum = 1;
 		else if (sum < 0)
-			sum = 0;
+			sum *= LEARNINGRATE;
 		
-		heldValue = sum;
+		return sum;
 	}
 };
 
 class NodeLayer {
 public:
-	LayerType myType;
 	vector<Node> nodes;
 
 	NodeLayer(vector<double> target) { //a node layer created with a target will always be an input layer
 		vector<Node> newNodes;
 		for (int i = 0; i < target.size(); i++)
-			newNodes.push_back(Node(Input));
+			newNodes.push_back(Node(target[i]));
 
 		nodes = newNodes;
-		myType = Input;
 	}
 
-	NodeLayer(int layerSize, LayerType lType) {
+	NodeLayer(int layerSize, bool isOutput = false) {
 		vector<Node> newNodes;
 		for (int i = 0; i < layerSize; i++)
-			newNodes.push_back(Node(lType));
+			newNodes.push_back((isOutput) ? Node(0) : Node());
 
 		nodes = newNodes;
-		myType = lType;
 	}
+
 
 	~NodeLayer() {}
 };
