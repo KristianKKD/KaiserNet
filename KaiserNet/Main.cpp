@@ -17,7 +17,7 @@ int hiddenLayerSize = 2;
 vector<NodeLayer> layerList;
 
 int main() {
-	Log("KaiserNet version: 0.0.4");
+	Log("KaiserNet version: 0.0.4a");
 	//read_mnist("C:\\Users\\KrabGor\\Downloads\\labels\\t10k-images.idx3-ubyte");
 	vector<double> target = { 0.2, 0.9 };
 

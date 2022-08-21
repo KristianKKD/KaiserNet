@@ -3,6 +3,7 @@
 
 double CalculateError(vector<NodeLayer> input);
 vector<NodeLayer> UpdateEdges(vector<NodeLayer> input);
+void UpdateHeldValues(vector<NodeLayer> input);
 void Print(vector<NodeLayer> input);
 
 extern int stepCount;
@@ -13,6 +14,7 @@ vector<NodeLayer> Learn(vector<NodeLayer> input) {
 	double oldDifference = CalculateError(oldLayers);*/
 
 	UpdateEdges(input);
+	UpdateHeldValues(input);
 	double newDifference = CalculateError(input);
 
 	/*if (newDifference < 0.0001) {
